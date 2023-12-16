@@ -21,17 +21,20 @@ repositories {
 	mavenCentral()
 }
 
-ext {
-	set('springCloudVersion', "2022.0.3")
-}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.3'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3'
+	//implementation 'org.elasticsearch.client:elasticsearch-rest-client:8.7.1'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	//implementation 'org.springframework.data:spring-data-elasticsearch'
+	implementation 'co.elastic.clients:elasticsearch-java'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+	implementation 'jakarta.json:jakarta.json-api:2.0.1'
+	implementation 'org.json:json:20090211'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -40,9 +43,6 @@ dependencies {
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {

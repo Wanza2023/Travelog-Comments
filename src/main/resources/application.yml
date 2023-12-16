@@ -6,9 +6,9 @@ spring:
     name: comments
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://18.215.150.119:3307/Comment
+    url: jdbc:mariadb://172.16.210.130:3307/Comment
     username: root
-    password: wanza1234
+    password: 1234!
   thymeleaf:
     cache: false
   devtools:
@@ -32,20 +32,10 @@ logging:
   level:
     org:
       springframework:
+        data.elasticsearch.client.WIRE: TRACE
         orm:
           jpa: DEBUG
           jpa.JpaTransactionManager: DEBUG
-
-eureka:
-  instance:
-    prefer-ip-address: false
-    lease-renewal-interval-in-seconds: 30
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: ${EUREKA_SERVER_URI:http://23.22.99.92:8761/eureka/}
-
 
 springdoc:
   swagger-ui:
@@ -53,8 +43,7 @@ springdoc:
     operationsSorter: method
     tagsSorter: alpha
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: ["env", "refresh"]
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
