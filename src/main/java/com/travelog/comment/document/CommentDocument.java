@@ -11,7 +11,6 @@ import org.springframework.data.elasticsearch.annotations.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(indexName = "sourcedb.comment.comment")
@@ -20,20 +19,21 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommentDocument {
     @Id
+    @Field(name = "comment_id", type = FieldType.Long)
     private Long comment_id;
-    @Field(type = FieldType.Long)
+    @Field(name = "board_id",type = FieldType.Long)
     private Long board_id;
-    @Field(type = FieldType.Text)
+    @Field(name = "nickname",type = FieldType.Text)
     private String nickname;
-    @Field(type = FieldType.Text)
+    @Field(name = "content",type = FieldType.Text)
     private String content;
-    @Field(type = FieldType.Date)
-    private LocalDateTime created_at;
-    @Field(type = FieldType.Date)
-    private LocalDateTime updated_at;
-    @Field(type = FieldType.Integer)
+    @Field(name = "created_at", type = FieldType.Date)
+    private long created_at;
+    @Field(name = "updated_at", type = FieldType.Date)
+    private long updated_at;
+    @Field(name = "report",type = FieldType.Integer)
     private int report; //default 0
-    @Field(type = FieldType.Boolean)
+    @Field(name = "status",type = FieldType.Boolean)
     private boolean status; //default 1
 }
 

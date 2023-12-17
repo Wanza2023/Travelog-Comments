@@ -8,11 +8,8 @@ import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.travelog.comment.document.CommentDocument;
-import com.travelog.comment.dto.BoardReqDto;
-import com.travelog.comment.dto.CMRespDto;
-import com.travelog.comment.dto.CommentReqDto;
+import com.travelog.comment.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
-import com.travelog.comment.dto.CommentResDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +69,7 @@ public class CommentController {
 //    }
     @Operation(summary = "특정 게시글의 댓글 전체 조회")
     @GetMapping(value = "/{boardId}")
-    public ResponseEntity<?> getComments(@PathVariable Long boardId) throws IOException, JSONException { //JSONException
+    public ResponseEntity<?> getComments(@PathVariable Long boardId) throws IOException{
 
         SearchResponse<CommentDocument> search = client.search(s -> s
                         .index("sourcedb.comment.comment")
@@ -83,28 +80,32 @@ public class CommentController {
                                 )),
                 CommentDocument.class
         );
-//        List<CommentResDto> comments = new ArrayList<>();
-//        for (Hit<CommentDocument> hit: search.hits().hits()) {
-//            comments.add(new CommentResDto(hit.source().getId(),
-//                        hit.source().getBoardId(),
-//                        hit.source().getNickname(),
-//                        hit.source().getContent(),
-//                        hit.source().getCreatedAt(),
-//                        hit.source().getUpdatedAt(),
-//                        hit.source().getReport(),
-//                        hit.source().isStatus()));
-//        }
-//        log.info(comments.get(0).getContent());
-//        return  comments;
-        long comment_id=0;
-        long board_id=0;
-        String nickname="";
-        String content="";
-        LocalDateTime createdAt=LocalDateTime.of(2017, Month.AUGUST,3,12,30);
-        LocalDateTime updatedAt=LocalDateTime.of(2017, Month.AUGUST,3,12,30);
-        int report=0;
-        boolean status=true;
+        List<CommentDocumentResDto> comments = new ArrayList<>();
+        for (Hit<CommentDocument> hit: search.hits().hits()) {
+            comments.add(new CommentDocumentResDto(hit.source().getComment_id(),
+                        hit.source().getBoard_id(),
+                        hit.source().getNickname(),
+                        hit.source().getContent(),
+                        hit.source().getCreated_at(),
+                        hit.source().getUpdated_at(),
+                        hit.source().getReport(),
+                        hit.source().isStatus()));
+        }
+        log.info(comments.get(0).getContent());
+        return new ResponseEntity<>(CMRespDto.builder()
+                .isSuccess(true).msg("댓글 조회").body(comments).build(), HttpStatus.OK);
 
+//        long comment_id=0;
+//        long board_id=0;
+//        String nickname="";
+//        String content="";
+//        //LocalDateTime createdAt=LocalDateTime.of(2017, Month.AUGUST,3,12,30);
+//        //LocalDateTime updatedAt=LocalDateTime.of(2017, Month.AUGUST,3,12,30);
+//        long createdAt = 0;
+//        long updatedAt = 0;
+//        int report=0;
+//        boolean status=true;
+//
 //        for (Hit<CommentDocument> hit: search.hits().hits()) {
 //            comment_id = hit.source().getComment_id();
 //            board_id = hit.source().getBoard_id();
@@ -125,8 +126,8 @@ public class CommentController {
 //        msg.put("updatedAt", updatedAt);
 //        msg.put("report", report);
 //        msg.put("status", status);
-
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+//
+//        return new ResponseEntity<>(msg.toString(), HttpStatus.OK);
     }
 
 //    @Operation(summary = "댓글 작성")

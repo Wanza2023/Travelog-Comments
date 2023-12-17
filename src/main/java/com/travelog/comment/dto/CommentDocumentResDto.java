@@ -16,8 +16,8 @@ public class CommentDocumentResDto {
     private Long boardId;
     private String nickname;
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private long createdAt;
+    private long updatedAt;
     private int report;
     private boolean status;
 
